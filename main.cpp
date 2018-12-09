@@ -14,6 +14,9 @@
 
 using namespace std;
 
+void writeFile(ofstream & file, map<string, int> & tally);
+void readFile(fstream & file, map<string, int> & tally);
+
 int main() {
 	fstream file;
 	string nameFile;
@@ -24,18 +27,25 @@ int main() {
 		cout << "Please enter file name: ";
 		cin >> nameFile;
 		file.open(nameFile);
-	} while (file.is_open());
+	} while (!file.is_open());
 
 	readFile(file, tally);
 	file.close();
-
-	writeFile(file, tally);
+	ofstream outputFile("output.txt");
+	writeFile(outputFile, tally);
 
 	return 0;
 }
 
-void writeFile(fstream & file, map<string, int> & tally) {
-	
+void writeFile(ofstream & file, map<string, int> & tally) {
+	for (map<string, int>::iterator it = tally.begin(); it != tally.end(); it++) {
+		string s = it->first;
+		int i = it->second;
+		while (i > 0) {
+			i--;
+			file << s << " ";
+		}
+	}
 }
 
 void readFile(fstream & file, map<string, int> & tally) {
@@ -43,5 +53,4 @@ void readFile(fstream & file, map<string, int> & tally) {
 	while (file >> input) {
 		++tally[input];
 	}
-
 }
